@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,6 +12,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "pg": "^8.10.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.14"
   }
 }
