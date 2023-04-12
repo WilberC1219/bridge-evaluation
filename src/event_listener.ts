@@ -1,11 +1,14 @@
 import { BlockchainReader } from "./blockchain_reader";
 
+import * as dotenv from "dotenv";
+dotenv.config({ path: "./.env" });
+
 export class EventListener {
   private blockchainReader: BlockchainReader;
 
   constructor() {
     const { PROVIDER_URL } = process.env;
-    this.blockchainReader = new this.blockchainReader(PROVIDER_URL);
+    this.blockchainReader = new BlockchainReader(PROVIDER_URL);
   }
 
   /**
