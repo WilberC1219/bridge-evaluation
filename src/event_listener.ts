@@ -1,23 +1,21 @@
 import { BlockchainReader } from "./blockchain_reader";
 
+import * as dotenv from "dotenv";
+dotenv.config({ path: "./.env" });
+
 export class EventListener {
   private blockchainReader: BlockchainReader;
 
   constructor() {
     const { PROVIDER_URL } = process.env;
-    this.blockchainReader = new this.blockchainReader(PROVIDER_URL);
+    this.blockchainReader = new BlockchainReader(String(PROVIDER_URL));
   }
 
-  /**
-   * @description Starts listening to finalized blocks over a websocket connection and kicks off
-   * event indexing process per block.
-   */
   async listenToEvents(): Promise<void> {
-    // Listen to the block header when the header is received
-    // kick off the message indexing process via fetchEvents
     this.blockchainReader.listenToBlockHeaders(async (blockNumber: number) => {
-      // TODO: print logs here
-      console.log(blockNumber);
+      const now = new Date();
+      const options = { timeZone: "America/New_York" };
+      console.log(`Block number: ${blockNumber} | ${now.toLocaleString("en-US", options)} est`);
     });
   }
 }
