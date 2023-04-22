@@ -15,13 +15,17 @@ export class BlockchainReader {
     return this.provider.getTransactionReceipt(transactionHash);
   }
 
+  public getBlock(blockNumber: number) {
+    return this.provider.getBlock(blockNumber);
+  }
+
   public listenToBlockHeaders(eventHandler: (blockNumber: number) => void): void {
     this.provider.on("block", eventHandler);
   }
 
   public async getEvents(
     fromBlock: number,
-    toBlock: number,
+    toBlock?: number,
     eventTopics?: string[],
     addresses?: Array<string>
   ): Promise<ethers.Log[]> {
@@ -29,7 +33,7 @@ export class BlockchainReader {
       topics: eventTopics,
       address: addresses,
       fromBlock: fromBlock,
-      toBlock: toBlock,
+      toBlock: toBlock ? toBlock : "latest",
     });
   }
 
