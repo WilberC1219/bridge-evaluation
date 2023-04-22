@@ -1,4 +1,4 @@
-import { AppDataSource } from "../data_source.ts";
+import { AppDataSource } from "./data_source.ts";
 
 (async () => {
   console.log("Starting server");

@@ -67,7 +67,7 @@ async function parseLogV1(logs: ethers.Log[]): Promise<void> {
       //store into the data base
     } catch (error) {
       console.error(error);
-      throw new Error(`Error occured with transaction!`);
+      throw new Error(`Error: failed in getting transaction details`);
     }
   });
 }
@@ -87,21 +87,22 @@ async function parseLogV2(logs: ethers.Log[]): Promise<void> {
         transactionHash: log.transactionHash,
         transferAmount: usdcAmt,
         blockNumber: log.blockNumber,
-        gasPrice: BigInt(-1),
-        gasUsed: BigInt(-1),
+        gasPrice: -BigInt(1),
+        gasUsed: -BigInt(1),
         timestamp: -1,
       };
-      const receipt = await retry(() => transactionReceipt(log.transactionHash), retryOptions);
-      const block = await retry(() => block_(log.blockNumber), retryOptions);
+      const receipt = await transactionReceipt(log.transactionHash);
+      const block = await block_(log.blockNumber);
       details.gasPrice = receipt.gasPrice;
       details.gasUsed = receipt.gasUsed;
       details.timestamp = block.timestamp;
-      console.log(details);
+      console.log("\nTransaction:");
+      console.log(details, "\n");
       transactions.push(details);
       //store into the data base
     } catch (error) {
       console.error(error);
-      throw new Error(`Error occured with transaction!`);
+      throw new Error(`Error: failed in getting transaction details`);
     }
   }
 }
