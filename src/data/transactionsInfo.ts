@@ -3,8 +3,11 @@ import { AppDataSource } from "../data_source";
 import { POSTGRESQL_ERROR } from "../constants/postgresql";
 import { Blockchain } from "../constants/data_enums";
 import { uuidWithPrefix } from "../utils/uuid";
+
 @Entity({ name: "transaction_information" })
-@Index("unique_transaction_information", ["transactionHash", "blockchain"], { unique: true })
+@Index("unique_transaction_information", ["transactionHash", "blockchain", "blockNumber", "transferAmount"], {
+  unique: true,
+})
 export class TransactionInformation {
   @PrimaryColumn({ name: "id", type: "text", update: false })
   id: string;
@@ -13,7 +16,7 @@ export class TransactionInformation {
   transactionHash: string;
 
   @Column({ name: "transfer_amount", type: "bigint", update: false })
-  transferAmount: number;
+  transferAmount: bigint;
 
   @Column({ name: "blockchain", type: "text", update: false })
   blockchain: Blockchain;
@@ -22,10 +25,10 @@ export class TransactionInformation {
   blockNumber: number;
 
   @Column({ name: "gas_price", type: "bigint", update: false })
-  gasPrice: number;
+  gasPrice: bigint;
 
   @Column({ name: "gas_used", type: "bigint", update: false })
-  gasUsed: number;
+  gasUsed: bigint;
 
   @Column({ name: "timestamp", type: "numeric", update: false })
   timestamp: number;
@@ -38,25 +41,46 @@ export class TransactionInformation {
   }
 
   generateUuid(): void {
-    this.id = uuidWithPrefix(true, "app");
+    this.id = uuidWithPrefix(true, "trn");
   }
 
   async validate(): Promise<void> {
     this.transactionHash = this.transactionHash?.trim()?.toLocaleLowerCase();
   }
 
-  equal(transactionHash: string, blockchain: Blockchain): boolean {
-    return this.transactionHash == transactionHash && this.blockchain == blockchain;
+  equal(transactionHash: string, blockchain: Blockchain, blockNumber: number, transferAmount: bigint): boolean {
+    return (
+      this.transactionHash == transactionHash &&
+      this.blockchain == blockchain &&
+      this.blockNumber == blockNumber &&
+      this.transferAmount == transferAmount
+    );
   }
 
-  static async create(transactionHash: string, blockchain: Blockchain): Promise<TransactionInformation> {
+  static async create(
+    transactionHash: string,
+    blockchain: Blockchain,
+    blockNumber: number,
+    transferAmount: bigint,
+    gasUsed: bigint,
+    gasPrice: bigint,
+    timestamp: number
+  ): Promise<TransactionInformation> {
     const transaction = new TransactionInformation();
     transaction.transactionHash = transactionHash;
     transaction.blockchain = blockchain;
+    transaction.blockNumber = blockNumber;
+    transaction.transferAmount = transferAmount;
+    transaction.gasUsed = gasUsed;
+    transaction.gasPrice = gasPrice;
+    transaction.timestamp = timestamp;
 
-    const insertResult = await AppDataSource.createQueryBuilder()
+    const connection = await AppDataSource.initialize();
+    const insertResult = await connection
+      .getRepository(TransactionInformation)
+      .createQueryBuilder()
       .insert()
-      .into(TransactionInformation)
+      .into("transaction_information")
       .values(transaction)
       .orIgnore()
       .returning("*")
@@ -64,9 +88,9 @@ export class TransactionInformation {
 
     if ((insertResult.raw as Array<TransactionInformation>).length == 0) {
       const collidingEntry = await AppDataSource.getRepository(TransactionInformation).findOne({
-        where: { transactionHash, blockchain },
+        where: { transactionHash, blockchain, blockNumber },
       });
-      if (collidingEntry?.equal(transactionHash, blockchain)) {
+      if (collidingEntry?.equal(transactionHash, blockchain, blockNumber, transferAmount)) {
         return collidingEntry;
       } else {
         throw {
