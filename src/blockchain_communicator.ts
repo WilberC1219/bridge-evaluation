@@ -23,7 +23,7 @@ export class BlockchainCommunicator {
     return this.reader.getLatestBlockNumber();
   }
 
-  public getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
+  public getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt | null> {
     return this.reader.getTransactionReceipt(transactionHash);
   }
 
