@@ -30,9 +30,9 @@ const read_events = new ReadEvent(blockchain_reader, db_interact);
       const lastBlock = await db_interact.getLastestBlockAdded();
       if (lastBlock > 0) {
         //added blocks that were created since last running the program
-        console.log(`starting to store blocks beginning from ${lastBlock}`);
+        console.log(`Searching for any new transactions since block ${lastBlock}`);
         const num_added = await read_events.readEvent("Transfer(address,address,uint256)", Number(lastBlock) + 1);
-        console.log(`finished adding ${num_added} blocks to the database`);
+        console.log(`Added ${num_added} transactions to the database`);
 
         //begin main program, which listens for user input and prints information out to the console
         main();
@@ -70,7 +70,7 @@ async function processCommand(command: string[]): Promise<void> {
   const params = parseParams(command.slice(1));
   if (fs.existsSync(fileName)) {
     const module = require(fileName);
-    await module.execute(params, db_interact, blockchain_reader);
+    await module.execute(params, db_interact, blockchain_reader, read_events);
   } else {
     console.log("Invalid command. Please try again.");
   }

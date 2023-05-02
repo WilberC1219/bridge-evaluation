@@ -50,8 +50,9 @@ export class DBInteract {
       .addSelect("t.gas_used", "gasUsed")
       .addSelect("t.transaction_hash", "transactionHash")
       .addSelect("t.transfer_amount", "transferAmount")
+      .addSelect("t.timestamp", "timestamp")
       .where(`t.timestamp >= ${startTime} AND t.timestamp <= ${endTime}`)
-      .groupBy("t.gas_price, t.gas_used, t.transaction_hash, t.transfer_amount")
+      .groupBy("t.gas_price, t.gas_used, t.transaction_hash, t.transfer_amount, t.timestamp")
       .orderBy("feevalue", "ASC")
       .getRawOne();
 
@@ -70,8 +71,9 @@ export class DBInteract {
       .addSelect("t.gas_used", "gasUsed")
       .addSelect("t.transaction_hash", "transactionHash")
       .addSelect("t.transfer_amount", "transferAmount")
+      .addSelect("t.timestamp", "timestamp")
       .where(`t.timestamp >= ${startTime} AND t.timestamp <= ${endTime}`)
-      .groupBy("t.gas_price, t.gas_used, t.transaction_hash, t.transfer_amount")
+      .groupBy("t.gas_price, t.gas_used, t.transaction_hash, t.transfer_amount, t.timestamp")
       .orderBy("feevalue", "DESC")
       .getRawOne();
 
