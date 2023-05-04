@@ -1,5 +1,16 @@
-#Description
+# Bridge-Evaluation
+
+## Description
+
 Bridge-Evaluation is program that can generate a brief summary of USDC transactions involving Stargate over a specified date range.
+
+## Setup
+
+##### Clone the repo to your local machine
+
+```bash
+gs npm run start
+```
 
 ```
 bridge-evaluation % npm run start
@@ -14,7 +25,7 @@ bridge-evaluation % npm run start
 Starting server
 [Success] DB is connected
 Searching for any new transactions since block 17189721
-wilberclaudio@Wilbers-MacBook-Pro bridge-evaluation % npm run start
+bridge-evaluation % npm run start
 
 > bridge-evaluation@1.0.0 start
 > npm run build && node ./build/src/index.js
