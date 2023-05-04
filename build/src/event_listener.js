@@ -34,23 +34,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventListener = void 0;
 const blockchain_reader_1 = require("./blockchain_reader");
-const read_events_1 = require("./read_events");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: "./.env" });
 class EventListener {
-    constructor() {
+    constructor(read_events) {
         const { PROVIDER_URL } = process.env;
         this.blockchainReader = new blockchain_reader_1.BlockchainReader(String(PROVIDER_URL));
+        this.read_events = read_events;
     }
     listenToEvents() {
         return __awaiter(this, void 0, void 0, function* () {
             this.blockchainReader.listenToBlockHeaders((blockNumber) => __awaiter(this, void 0, void 0, function* () {
-                const now = new Date();
-                const options = { timeZone: "America/New_York" };
-                console.log(`Block number: ${blockNumber} | ${now.toLocaleString("en-US", options)} est`);
-                console.log(`\x1b[32m`, `Gerber is a bitch`);
-                //store transaction into database
-                (0, read_events_1.readEvent)("Transfer(address,address,uint256)", blockNumber, blockNumber);
+                //store any new transaction into database
+                this.read_events.readEvent("Transfer(address,address,uint256)", blockNumber, blockNumber);
             }));
         });
     }
