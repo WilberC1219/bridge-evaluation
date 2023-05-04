@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from "typeorm";
+import { BeforeInsert, Column, DataSource, Entity, Index, PrimaryColumn } from "typeorm";
 import { AppDataSource } from "../data_source";
 import { POSTGRESQL_ERROR } from "../constants/postgresql";
 import { Blockchain } from "../constants/data_enums";
@@ -75,9 +75,7 @@ export class TransactionInformation {
     transaction.gasPrice = gasPrice;
     transaction.timestamp = timestamp;
 
-    const connection = await AppDataSource.initialize();
-    const insertResult = await connection
-      .getRepository(TransactionInformation)
+    const insertResult = await AppDataSource.manager
       .createQueryBuilder()
       .insert()
       .into("transaction_information")
@@ -100,7 +98,6 @@ export class TransactionInformation {
         };
       }
     }
-
     return transaction;
   }
 }
