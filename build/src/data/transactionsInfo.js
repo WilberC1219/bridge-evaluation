@@ -63,7 +63,6 @@ let TransactionInformation = TransactionInformation_1 = class TransactionInforma
                 .orIgnore()
                 .returning("*")
                 .execute();
-            console.log(insertResult);
             if (insertResult.raw.length == 0) {
                 const collidingEntry = yield data_source_1.AppDataSource.getRepository(TransactionInformation_1).findOne({
                     where: { transactionHash, blockchain, blockNumber },

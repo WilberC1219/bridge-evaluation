@@ -66,10 +66,14 @@ function main() {
 //Function used to run commands that are available in the commands directoryhello
 async function processCommand(command: string[]): Promise<void> {
   //command is an array, where index 0 is the command
-  const fileName = path.join(__dirname, `/commands/${command[0]}.ts`);
+  const tsfileName = path.join(__dirname, `/commands/${command[0]}.ts`);
+  const jsfileName = path.join(__dirname, `/commands/${command[0]}.js`);
   const params = parseParams(command.slice(1));
-  if (fs.existsSync(fileName)) {
-    const module = require(fileName);
+  if (fs.existsSync(tsfileName)) {
+    const module = require(tsfileName);
+    await module.execute(params, db_interact, blockchain_reader, read_events);
+  } else if (fs.existsSync(jsfileName)) {
+    const module = require(jsfileName);
     await module.execute(params, db_interact, blockchain_reader, read_events);
   } else {
     console.log("Invalid command. Please try again.");
