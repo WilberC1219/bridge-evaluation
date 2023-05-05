@@ -22,9 +22,6 @@ function execute(args, db_interact, blockchain_reader, read_events) {
         else if (endblock < startblock) {
             console.log(`[Error] error start block cannot be less than end block`);
         }
-        else if (endblock - startblock >= 2000) {
-            console.log(`[Error] The difference between starting block and ending block cannot exceed 2000`);
-        }
         else {
             //convert blocks to Numbers
             try {

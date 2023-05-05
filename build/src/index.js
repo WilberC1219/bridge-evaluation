@@ -63,9 +63,12 @@ const read_events = new read_events_1.ReadEvent(blockchain_reader, db_interact);
             console.log(`Searching for any new transactions since block ${lastBlock}`);
             const num_added = yield read_events.readEvent("Transfer(address,address,uint256)", Number(lastBlock) + 1);
             console.log(`Added ${num_added} transactions to the database`);
-            //begin main program, which listens for user input and prints information out to the console
-            main();
         }
+        else {
+            console.log(`There are no transactions in the database. Use storeblocks command to store blocks into the database`);
+        }
+        //begin main program, which listens for user input and prints information out to the console
+        main();
     }))
         .catch((error) => {
         console.log("[Error] Error connecting DB", error);
