@@ -38,6 +38,7 @@ const read_events = new ReadEvent(blockchain_reader, db_interact);
           `There are no transactions in the database. Use storeblocks command to store blocks into the database`
         );
       }
+      
       //begin main program, which listens for user input and prints information out to the console
       main();
     })
