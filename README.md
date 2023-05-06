@@ -21,7 +21,7 @@ Bridge-Evaluation is program that can generate a brief summary of USDC transacti
 
     <br />
 
-3. After completing steps 1 and 2, start up the Docker application then run the following command in your command line interface while in the root directory of Bridge-Evaluation.
+3. After completing steps 1 and 2, start up the Docker application run the following command in your command line interface while in the root directory of Bridge-Evaluation.
 
 ```bash
 docker-compose up -d
@@ -31,15 +31,49 @@ docker-compose up -d
 
 5. Register a server named `evaluating-bridges` in pgadmin with the following creds
 
-   1. Host-name/Address: `<Container Name of the service named db in compose.yml>`
-   2. Port: `<Container Port of the service named db in compose.yml>`
-   3. Username: `<POSTGRES_USER env var of the service named db in compose.yml>`
-   4. Password: `<POSTGRES_PASSWORD env var of the service named db  compose.yml>`
+   1. Host-name/Address: `<Container Name of the service named db in compose.yml>` by default it's `evaluating-bridges`
+   2. Port: `<Container Port of the service named db in compose.yml>` by default it's `5432`
+   3. Username: `<POSTGRES_USER env var of the service named db in compose.yml>` by default it's `username`
+   4. Password: `<POSTGRES_PASSWORD env var of the service named db  compose.yml>` by default it's `password`
 
-6.
+<br />
+
+6. Install all node packages required by running the command
+
+```bash
+npm install
+```
+
+<br />
+
+7. In the root directory of the project, add a `.env` file. Inside of the `.env` file add the following line. Replace `YOUR_NODE_PROVIDER_URL` with your node provider from step 2. Don't forget to save afterwards!
 
 ```
-bridge-evaluation % npm run start
+PROVIDER_URL=YOUR_NODE_PROVIDER_URL
+```
+
+<br />
+
+8. Set up the database table `transaction_information`. In order to set up the table make sure docker is still open and running the container created in step 3 then in the root directory of the project run the command:
+
+```
+npm run run-db-migrations
+```
+
+## Running Bridge-Evaluation
+
+Aftering completing the setup steps 1 through 8, `Bridge-Evaluation` can be ran on your machine. in order to start the program use the command:
+
+```bash
+npm run start
+```
+
+<br />
+
+- Below is an example of starting Bridge-Evaluation after completing steps 1 through 8.
+
+```
+ bridge-evaluation % npm run start
 
 > bridge-evaluation@1.0.0 start
 > npm run build && node ./build/src/index.js
@@ -50,35 +84,7 @@ bridge-evaluation % npm run start
 
 Starting server
 [Success] DB is connected
-Searching for any new transactions since block 17189721
-bridge-evaluation % npm run start
-
-> bridge-evaluation@1.0.0 start
-> npm run build && node ./build/src/index.js
-
-
-> bridge-evaluation@1.0.0 build
-> rimraf ./build && tsc
-
-Starting server
-[Success] DB is connected
-Searching for any new transactions since block 17189721
-Added 0 transactions to the database
-
-Enter a command: overview start:2023-04-30 end:2023-05-02
-
-Transaction overview for 2023-04-30 to 2023-05-02:
-        -Total number of transactions: 297
-        -Tranaction with highest fee:
-                 Transaction Hash: 0x191ad76425ba96e622d014e5d0a6d61ebcc6cbc24d9c99c7c287487fe9eeaf9d
-                 Transfer Amount: 199.641865 USDC
-                 Transaction Fee: $101.35604811416293
-        -Tranaction with lowest fee:
-                 Transaction Hash: 0x30b67d9b1a72c170192dc567d839923d29643a9b2db9dd32c06207a3d1960cda
-                 Transfer Amount: 1007.980958 USDC
-                 Transaction Fee: $6.843351950142943
-        -Highest transaction fee occured at time: 5/2/2023, 10:49:59 AM
-        -Lowest transaction fee occured at time: 4/30/2023, 12:48:11 AM
+There are no transactions in the database. Use storeblocks command to store blocks into the database
 
 Enter a command:
 ```
