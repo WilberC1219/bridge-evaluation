@@ -70,7 +70,7 @@ npm run run-db-migrations
 
 ## Running Bridge-Evaluation
 
-Aftering completing the setup steps 1 through 8, `Bridge-Evaluation` can be ran on your machine. in order to start the program use the command:
+Aftering completing the setup steps 1 through 8, `Bridge-Evaluation` can be ran on your machine. In order to start the program use the command:
 
 ```bash
 npm run start
@@ -78,7 +78,7 @@ npm run start
 
 <br />
 
-- Below is an example of starting Bridge-Evaluation after completing steps 1 through 8.
+- Below is an example of starting `Bridge-Evaluation` after completing steps 1 through 8.
 
 ```
  bridge-evaluation % npm run start
@@ -101,7 +101,7 @@ Enter a command:
 
 ## Storing Transactions into the database
 
-- After successfully starting `Bridge-Evaluation`, we can store transactions that are stored within a given block range by using the `storeblocks` command. `storeblocks` takes two parameters, `startblock` and `endblock`. `startblock` is the starting block number where `Bridge-Evaluation` will begin storing transactions involving USDC and stargate. `endblock` is the final block number where `Bridge-Evaluation` will stop storing transactions involving USDC and stargate. Below is an example of using `storeblocks` (The block range in the example below contains transactions that occurred between April 27, 2023 to May 05, 2023)
+- After successfully starting `Bridge-Evaluation`, we can store transactions within a given block range by using the `storeblocks` command. `storeblocks` takes two parameters, `startblock` and `endblock`. `startblock` is the starting block number where `Bridge-Evaluation` will begin storing transactions involving USDC and stargate. `endblock` is the final block number where `Bridge-Evaluation` will stop storing transactions involving USDC and stargate. Below is an example of using `storeblocks` (The block range in the example below contains transactions that occurred between April 27, 2023 to May 05, 2023)
 
 ```
 Enter a command: storeblocks startblock:17141945 endblock:17196155
@@ -111,13 +111,13 @@ A total of 697 transactions were added to the database
 Enter a command:
 ```
 
-- After running the previous example, feel free to check the `transaction_information` table on pgadmin. The table will store all the transactions that were just stored from running the `storeblocks` command.
+- After running the previous example, feel free to check the `transaction_information` table on pgadmin. The table will have stored all the transactions from running the `storeblocks` command.
 
 <br />
 
 ## Getting overview of transactions
 
-- To obtain a brief summary of transactions for a given date range, the `overview` command is used, it requires two parameters. The first parameter is `start`, which specifies the beginning date of the date range to be searched, while the second parameter is `end`, indicating the ending date of the date range to be searched (the format for the dates must be YYYY-MM-DD). Below is an example of using the `overview` command on the transactions that were store in the previous example.
+- To obtain a brief summary of transactions for a given date range, the `overview` command is used, it requires two parameters. The first parameter is `start`, which specifies the beginning date of the date range to be searched, while the second parameter is `end`, indicating the ending date of the date range to be searched (the format for the dates must be YYYY-MM-DD). Below is an example of using the `overview` command on the transactions that were stored in the previous example.
 
 ```
 Enter a command: overview start:2023-04-27 end:2023-05-05
@@ -136,7 +136,7 @@ Transaction overview for 2023-04-27 to 2023-05-05:
         -Lowest transaction fee occured at time: 4/30/2023, 12:48:11 AM
 ```
 
-- In the overview the following information is printed out to the console:
+- In the overview above, the following information is printed out to the console:
 
   - The total number of transactions that occured between the given date range.
   - The transaction that had the highest transaction fee.
@@ -147,6 +147,6 @@ Transaction overview for 2023-04-27 to 2023-05-05:
 
 # Important things to keep in mind
 
-- There may be discrepancies between the transaction fee that is displayed on the console and the actual transaction fee paid, as the calculation of the fee in USD is based on an exchange rate that differs from the one applicable on the date of the transaction. Specifically, the exchange rate used is the rate at the moment overview command is executed. This shouldn't cause major discrepancies when checking recent transactions.
+- There may be discrepancies between the transaction fee that is displayed on the console and the actual transaction fee paid, as the calculation of the fee in USD is based on an exchange rate that differs from the one applicable on the date of the transaction. Specifically, the exchange rate used to compute the transaction fee is the rate at the moment the `overview` command is ran. This shouldn't cause major discrepancies when checking recent transactions.
 
-- When running the `overview` command, its important that database contains transactions for the date range specified. Otherwise if a range is specified without adding the transactions using `storeblocks` command first, an error will occur.
+- When running the `overview` command, its important that database contains transactions for the date range specified. Otherwise if a range is specified without adding the transactions using the `storeblocks` command first, an error will occur.
