@@ -21,7 +21,7 @@ export class DBInteract {
         details.gasPrice,
         details.timestamp
       );
-      //console.log(`transaction ${details.transactionHash} has been saved`);
+      console.log(`Successfully stored transaction ${details.transactionHash}`);
     } catch (error) {
       throw new Error(`${error}`);
     }

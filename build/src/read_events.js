@@ -59,13 +59,13 @@ class ReadEvent {
                 "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
             ]);
             const num_events = events.length;
-            this.parseLogBlocked(events);
+            yield this.parseLogBlocked(events);
             return num_events;
         });
     }
     /** forEach VERSION (does not wait for each transaction details object to be created before moving onto the next)
      * function used to decode the encoded Logs and store the necessary data into
-     * The database. Consider adding a way to check the range of block numbers we have in out
+     * The database.
      */
     parseLog(logs) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -94,7 +94,7 @@ class ReadEvent {
     }
     /** for loop VERSION (waits for each transaction details object to be create before moving onto the next)
      * function used to decode the encoded Logs and store the necessary data into
-     * The database. (I used this for tesing purposes)
+     * The database.
      */
     parseLogBlocked(logs) {
         return __awaiter(this, void 0, void 0, function* () {

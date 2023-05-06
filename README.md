@@ -101,12 +101,19 @@ Enter a command:
 
 ## Storing Transactions into the database
 
-- After successfully starting `Bridge-Evaluation`, we can store transactions within a given block range by using the `storeblocks` command. `storeblocks` takes two parameters, `startblock` and `endblock`. `startblock` is the starting block number where `Bridge-Evaluation` will begin storing transactions involving USDC and stargate. `endblock` is the final block number where `Bridge-Evaluation` will stop storing transactions involving USDC and stargate. Below is an example of using `storeblocks` (The block range in the example below contains transactions that occurred between April 27, 2023 to May 05, 2023)
+- After successfully starting `Bridge-Evaluation`, we can store transactions within a given block range by using the `storeblocks` command. `storeblocks` takes two parameters, `startblock` and `endblock`. `startblock` is the starting block number where `Bridge-Evaluation` will begin storing transactions involving USDC and stargate. `endblock` is the final block number where `Bridge-Evaluation` will stop storing transactions involving USDC and stargate. Note the block range used contains 697 transactions which will take time for all the transactions to be stored. Below is an example of using `storeblocks` (The block range in the example below contains transactions that occurred between April 27, 2023 to May 05, 2023)
 
 ```
 Enter a command: storeblocks startblock:17141945 endblock:17196155
+storeblocks startblock:17141945 endblock:17196155
+Successfully stored transaction 0xb3daa4278de9f6cdbe539bf01abb1af5a5926d68d44f4bd136b3ca201793631f
+Successfully stored transaction 0x82d007f2c60d16f2a79e7d5f7c7df0852b5a3d8cb7bd50617aa497e7e19c7e40
+...
+Successfully stored transaction 0xff3b3d5c6f1c7ffbc20078bfbac7c2f7f3e00a8c028eb292c82685d1ebd00668
+Successfully stored transaction 0x6127724bbb8b1dd19f9cd788b9e05af719e3f6ccc24e84c63ff4baee8d926a0a
 Finished adding transactions in block range 17141945 to 17196155
 A total of 697 transactions were added to the database
+
 
 Enter a command:
 ```
