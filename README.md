@@ -4,6 +4,8 @@
 
 Bridge-Evaluation is program that can generate a brief summary of USDC transactions involving Stargate over a specified date range.
 
+<br />
+
 ## Setup
 
 1. Make sure you have the following installed on your machine:
@@ -21,13 +23,17 @@ Bridge-Evaluation is program that can generate a brief summary of USDC transacti
 
     <br />
 
-3. After completing steps 1 and 2, start up the Docker application run the following command in your command line interface while in the root directory of Bridge-Evaluation.
+3. After completing steps 1, 2, and cloning this repository, start up the Docker application then run the following command in your command line interface while in the root directory of `Bridge-Evaluation`.
 
 ```bash
 docker-compose up -d
 ```
 
+<br />
+
 4. Connect to your postgresql database using pgadmin by navigating to localhost:5001 and sign in using credentials in the `compose.yml` file (email: admin@admin.com and password: root)
+
+<br />
 
 5. Register a server named `evaluating-bridges` in pgadmin with the following creds
 
@@ -60,6 +66,8 @@ PROVIDER_URL=YOUR_NODE_PROVIDER_URL
 npm run run-db-migrations
 ```
 
+<br />
+
 ## Running Bridge-Evaluation
 
 Aftering completing the setup steps 1 through 8, `Bridge-Evaluation` can be ran on your machine. in order to start the program use the command:
@@ -88,3 +96,57 @@ There are no transactions in the database. Use storeblocks command to store bloc
 
 Enter a command:
 ```
+
+<br />
+
+## Storing Transactions into the database
+
+- After successfully starting `Bridge-Evaluation`, we can store transactions that are stored within a given block range by using the `storeblocks` command. `storeblocks` takes two parameters, `startblock` and `endblock`. `startblock` is the starting block number where `Bridge-Evaluation` will begin storing transactions involving USDC and stargate. `endblock` is the final block number where `Bridge-Evaluation` will stop storing transactions involving USDC and stargate. Below is an example of using `storeblocks` (The block range in the example below contains transactions that occurred between April 27, 2023 to May 05, 2023)
+
+```
+Enter a command: storeblocks startblock:17141945 endblock:17196155
+Finished adding transactions in block range 17141945 to 17196155
+A total of 697 transactions were added to the database
+
+Enter a command:
+```
+
+- After running the previous example, feel free to check the `transaction_information` table on pgadmin. The table will store all the transactions that were just stored from running the `storeblocks` command.
+
+<br />
+
+## Getting overview of transactions
+
+- To obtain a brief summary of transactions for a given date range, the `overview` command is used, it requires two parameters. The first parameter is `start`, which specifies the beginning date of the date range to be searched, while the second parameter is `end`, indicating the ending date of the date range to be searched (the format for the dates must be YYYY-MM-DD). Below is an example of using the `overview` command on the transactions that were store in the previous example.
+
+```
+Enter a command: overview start:2023-04-27 end:2023-05-05
+
+Transaction overview for 2023-04-27 to 2023-05-05:
+        -Total number of transactions: 697
+        -Tranaction with highest fee:
+                 Transaction Hash: 0xff3b3d5c6f1c7ffbc20078bfbac7c2f7f3e00a8c028eb292c82685d1ebd00668
+                 Transfer Amount: 1638.015842 USDC
+                 Transaction Fee: $143.90485279264487
+        -Tranaction with lowest fee:
+                 Transaction Hash: 0x30b67d9b1a72c170192dc567d839923d29643a9b2db9dd32c06207a3d1960cda
+                 Transfer Amount: 1007.980958 USDC
+                 Transaction Fee: $7.221737778877362
+        -Highest transaction fee occured at time: 5/5/2023, 1:09:23 PM
+        -Lowest transaction fee occured at time: 4/30/2023, 12:48:11 AM
+```
+
+- In the overview the following information is printed out to the console:
+
+  - The total number of transactions that occured between the given date range.
+  - The transaction that had the highest transaction fee.
+  - The transaction that had the lowest transaction fee.
+  - The date and time when the both the highest and lowest transaction fees occurred.
+
+  <br />
+
+# Important things to keep in mind
+
+- There may be discrepancies between the transaction fee that is displayed on the console and the actual transaction fee paid, as the calculation of the fee in USD is based on an exchange rate that differs from the one applicable on the date of the transaction. Specifically, the exchange rate used is the rate at the moment overview command is executed. This shouldn't cause major discrepancies when checking recent transactions.
+
+- When running the `overview` command, its important that database contains transactions for the date range specified. Otherwise if a range is specified without adding the transactions using `storeblocks` command first, an error will occur.
