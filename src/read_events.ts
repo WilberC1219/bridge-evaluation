@@ -47,7 +47,7 @@ export class ReadEvent {
 
   /** forEach VERSION (does not wait for each transaction details object to be created before moving onto the next)
    * function used to decode the encoded Logs and store the necessary data into
-   * The database. Consider adding a way to check the range of block numbers we have in out
+   * The database.
    */
   public async parseLog(logs: ethers.Log[]): Promise<void> {
     const abiObj = new ethers.Interface(abi);
@@ -78,7 +78,7 @@ export class ReadEvent {
 
   /** for loop VERSION (waits for each transaction details object to be create before moving onto the next)
    * function used to decode the encoded Logs and store the necessary data into
-   * The database. (I used this for tesing purposes)
+   * The database.
    */
   public async parseLogBlocked(logs: ethers.Log[]): Promise<void> {
     const abiObj = new ethers.Interface(abi);
